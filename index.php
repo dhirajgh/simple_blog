@@ -8,7 +8,7 @@
 // include_once ('inc/functions.inc.php');
 // include_once ('inc/db.inc.php');
 //The above method of including files was not working so placed them under single line comments
-
+//Just for testing adding a comment for checking
 include_once 'inc/function.inc.php';
 include_once 'inc/db.inc.php';
 
