@@ -9,11 +9,24 @@ include_once 'inc/db.inc.php';
 // Open a database connection
 $db = new PDO(DB_INFO, DB_USER, DB_PASS);
 
+        /*
+        * Figure out what page is being requested (default is blog)
+        * Perform basic sanitization on the variable as well
+        */
+        if(isset($_GET['page']))
+        {
+        $page = htmlentities(strip_tags($_GET['page']));
+        }
+        else
+        {
+        $page = 'blog';
+        }
+
 // Determine if an entry ID was passed in the URL
 $id = (isset($_GET['id'])) ? (int) $_GET['id'] : NULL;
 
 // Load the entries
-$e = retrieveEntries($db, $id);
+$e = retrieveEntries($db, $page, $id);
 
 // Get the fulldisp flag and remove it from the array
 $fulldisp = array_pop($e);
@@ -51,6 +64,11 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml
 			?>
 				<h2> <?php echo $e['title'] ?> </h2>
 				<p> <?php echo $e['entry'] ?> </p>
+                <?php if($page=='blog'): ?>
+                <p class="backlink">
+                <a href="./">Back to Latest Entries</a>
+                </p>
+                <?php endif; ?>
 				
 				<p class="backlink"><a href="./">Back to Latest Entries</a></p>
 			<?php
@@ -74,7 +92,12 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml
 
 					?>
 					
-<p class="backlink"><a href="/simple_blog/admin.php">Post a New Entry</a></p>
+                    <p class="backlink">
+                    <a href="/simple_blog/admin.php?page=<?php echo $page ?>">
+                    Post a New Entry
+                    </a>
+                    </p>
+                    
 	</div>
 	
 </body>
