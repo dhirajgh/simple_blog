@@ -78,6 +78,22 @@ function retrieveEntries($db, $page, $url=NULL)
 }
 //Function retriveEntries Closed
 
+function adminLinks($page, $url)
+{
+	// Build admin links here
+	// Format the link to be followed for each option
+	$editURL = "/simple_blog/admin/$page/$url";
+	$deleteURL = "/simple_blog/admin/delete/$url";
+	// Finish the admin links here
+	
+	// Make a hyperlink and add it to an array
+	$admin['edit'] = "<a href=\"$editURL\">edit</a>";
+	$admin['delete'] = "<a href=\"$deleteURL\">delete</a>";
+	return $admin;
+	
+	
+}
+
 function sanitizeData($data)
 {
 	// If $data is not an array, run strip_tags()
