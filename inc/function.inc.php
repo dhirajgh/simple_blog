@@ -5,16 +5,17 @@ function retrieveEntries($db, $page, $url=NULL)
 	// Get entries from database
 	/* 	 * If an entry ID was supplied, load the associated entry 	*/
 	
-	if(isset($id))
+	if(isset($url))
 	{
 		// Load specified entry
 		
-		$sql = "SELECT title, entry
+		$sql = "SELECT id, page, title, entry
 		FROM entries
-		WHERE id=?
+		WHERE url=?
 		LIMIT 1";
 		$stmt = $db->prepare($sql);
-		$stmt->execute(array($_GET['id']));
+		$stmt->execute(array($url));
+		
 		// Save the returned entry array
 		$e = $stmt->fetch();
 		// Set the fulldisp flag for a single entry
