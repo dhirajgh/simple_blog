@@ -35,18 +35,19 @@ function retrieveEntries($db, $page, $url=NULL)
                 $e = NULL; // Declare the variable to avoid errors
                 
 			// Loop through returned results and store as an array
-                while($row = $stmt->fetch()) {
-                   if($page=='blog')
-                    {
-                    $e[] = $row;
-                    $fulldisp = 0;
-                    }
-                    else
-                    {
-                    $e = $row;
-                    $fulldisp = 1;
-                    }
-                }
+			while($row = $stmt->fetch()) {
+			if($page=='blog')
+			{
+			$e[] = $row;
+			$fulldisp = 0;
+			}
+			else
+			{
+			$e = $row;
+			$fulldisp = 1;
+			}
+			}
+
 				
 				// Set the fulldisp flag for multiple entries
 			//	$fulldisp = 0;
@@ -67,13 +68,11 @@ function retrieveEntries($db, $page, $url=NULL)
 							);
 						}
 			
-	}
-	//End of the else Loop
+	}//End of the else Loop
 	
 	// Return loaded data
-	
 	// Add the $fulldisp flag to the end of the array
-	array_push($e, $fulldisp);
+	array_push($e,$fulldisp);
 	return $e;
 	
 }

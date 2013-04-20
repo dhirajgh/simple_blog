@@ -1,7 +1,5 @@
 <?php
-
 // Include the necessary files
-
 include_once 'inc/function.inc.php';
 include_once 'inc/db.inc.php';
 
@@ -64,11 +62,19 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml
 				// If the full display flag is set, show the entry
 				if($fulldisp==1)
 					{
+						
+						// Get the URL if one wasn't passed
+						$url = (isset($url)) ? $url : $e['url'];
 			?>
-					
+					<h2> <?php echo $e['title'] ?> </h2>
+					<p> <?php echo $e['entry'] ?> </p>
+					<?php if($page=='blog'): ?>
+					<p class="backlink">
+					<a href="./">Back to Latest Entries</a>
+					</p>
+					<?php endif; ?>
 			<?php
-			// Get the URL if one wasn't passed
-			$url = (isset($url)) ? $url : $e['url'];
+
 					} // End the if statement
 
 
@@ -89,11 +95,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml
 
 					?>
 					
-                    <p class="backlink">
-                    <a href="/simple_blog/admin/<?php echo $page ?>">
-                    Post a New Entry
-                    </a>
-                    </p>
+                   
+					<p class="backlink">
+					
+					<a href="/simple_blog/admin/<?php echo $page ?>">
+					Post a New Entry
+					</a>
+				
+					</p>
                     
 	</div>
 	

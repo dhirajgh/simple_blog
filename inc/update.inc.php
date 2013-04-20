@@ -48,6 +48,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 		
 		
 		// Send the user to the new entry
+	//	header('Location: /simple_blog/?page='.$page.'&id='.$id[0]);
 		header('Location: /simple_blog/'.$page.'/'.$url);
 		exit;
 		
