@@ -21,11 +21,10 @@ $db = new PDO(DB_INFO, DB_USER, DB_PASS);
         $page = 'blog';
         }
 
-// Determine if an entry ID was passed in the URL
-$id = (isset($_GET['id'])) ? (int) $_GET['id'] : NULL;
-
+// Determine if an entry URL was passed
+$url = (isset($_GET['url'])) ? $_GET['url'] : NULL;
 // Load the entries
-$e = retrieveEntries($db, $page, $id);
+$e = retrieveEntries($db, $page, $url);
 
 // Get the fulldisp flag and remove it from the array
 $fulldisp = array_pop($e);
@@ -66,17 +65,10 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml
 				if($fulldisp==1)
 					{
 			?>
-				<h2> <?php echo $e['title'] ?> </h2>
-				<p> <?php echo $e['entry'] ?> </p>
-                <?php if($page=='blog'): ?>
-                <p class="backlink">
-                <a href="./">Back to Latest Entries</a>
-                </p>
-                <?php endif; ?>
-				
-				<p class="backlink"><a href="./">Back to Latest Entries</a></p>
+					
 			<?php
-			
+			// Get the URL if one wasn't passed
+			$url = (isset($url)) ? $url : $e['url'];
 					} // End the if statement
 
 
@@ -88,7 +80,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml
 							{
 
 			?>
-					<p><a href="?id=<?php echo $entry['id'] ?>"><?php echo $entry['title'] ?></a></p>
+					<p><a href="/simple_blog/<?php echo $entry['page'] ?>/<?php echo $entry['url'] ?>">
+					<?php echo $entry['title'] ?></a></p>
 					
 					<?php
 							} // End the foreach loop
@@ -97,7 +90,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml
 					?>
 					
                     <p class="backlink">
-                    <a href="/simple_blog/admin.php?page=<?php echo $page ?>">
+                    <a href="/simple_blog/admin/<?php echo $page ?>">
                     Post a New Entry
                     </a>
                     </p>

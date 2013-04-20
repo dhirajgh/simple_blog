@@ -1,4 +1,9 @@
 <?php
+
+// Include the functions so you can create a URL
+include_once 'function.inc.php';
+
+
 if($_SERVER['REQUEST_METHOD']=='POST'
 && $_POST['submit']=='Save Entry'
 && !empty($_POST['page'])
@@ -8,8 +13,12 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 //Start of the first loop inside php
 {
 		
+		// Create a URL to save in the database
+		$url = makeUrl($_POST['title']);
+		
 		// Include database credentials and connect to the database
 		include_once 'db.inc.php';
+	
 		$db = new PDO(DB_INFO, DB_USER, DB_PASS);
 		// Continue processing data...
 
@@ -20,12 +29,12 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 		$entry=$_POST['entry'];
 		
 		// Save the entry into the database
-        $sql = "INSERT INTO entries (page, title, entry)
-        VALUES (?, ?, ?)";
+		$sql = "INSERT INTO entries (page, title, entry, url)
+		VALUES (?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
-        $stmt->execute(
-        array($_POST['page'],$_POST['title'],$_POST['entry'])
-        );
+		$stmt->execute(
+		array($_POST['page'], $_POST['title'], $_POST['entry'], $url)
+		);
 		$stmt->closeCursor();
 		
         // Sanitize the page information for use in the success URL
@@ -39,7 +48,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 		
 		
 		// Send the user to the new entry
-		header('Location: /simple_blog/?page='.$page.'&id='.$id[0]);
+		header('Location: /simple_blog/'.$page.'/'.$url);
 		exit;
 		
 // Continue processing information . . .

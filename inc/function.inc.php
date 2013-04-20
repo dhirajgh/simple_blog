@@ -26,10 +26,10 @@ function retrieveEntries($db, $page, $url=NULL)
 	/* * If no entry ID was supplied, load all entry titles */
 		else
 	{
-                $sql = "SELECT id, page, title, entry
-                FROM entries
-                WHERE page=?
-                ORDER BY created DESC";
+				$sql = "SELECT id, page, title, entry, url
+				FROM entries
+				WHERE page=?
+				ORDER BY created DESC";
                 $stmt = $db->prepare($sql);
                 $stmt->execute(array($page));
                 $e = NULL; // Declare the variable to avoid errors
@@ -94,5 +94,16 @@ function sanitizeData($data)
 		return array_map('sanitizeData', $data);
 	}
 }
+
+function makeUrl($title)
+{
+	$patterns = array(
+			'/\s+/',
+			'/(?!-)\W+/'
+	);
+	$replacements = array('-', '');
+	return preg_replace($patterns, $replacements, strtolower($title));
+}
+
 
 ?>
