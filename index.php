@@ -65,10 +65,18 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml
 						
 						// Get the URL if one wasn't passed
 						$url = (isset($url)) ? $url : $e['url'];
+                        
+                        // Build the admin links
+                        $admin = adminLinks($page, $url);
 			?>
 					<h2> <?php echo $e['title'] ?> </h2>
 					<p> <?php echo $e['entry'] ?> </p>
-					<?php if($page=='blog'): ?>
+                    <p>
+                    <?php echo $admin['edit'] ?>
+                    <?php if($page=='blog') echo $admin['delete'] ?>
+                    </p>
+                    
+                    <?php if($page=='blog'): ?>
 					<p class="backlink">
 					<a href="./">Back to Latest Entries</a>
 					</p>
