@@ -134,6 +134,15 @@ return <<<FORM
 FORM;
 }
 
+//writing the delete entry 
+function deleteEntry($db, $url)
+{
+$sql = "DELETE FROM entries
+WHERE url=?
+LIMIT 1";
+$stmt = $db->prepare($sql);
+return $stmt->execute(array($url));
+}
 
 
 

@@ -18,6 +18,28 @@ else
 $page = 'blog';
 }
 
+//Adding another function
+if(isset($_POST['action']) && $_POST['action'] == 'delete')
+{
+    if($_POST['submit'] == 'Yes')
+        {
+        $url = htmlentities(strip_tags($_POST['url']));
+        if(deleteEntry($db, $url))
+        {
+        header("Location: /simple_blog/");
+        exit;
+        }
+        else
+        {
+        exit("Error deleting the entry!");
+        }
+        }
+    else
+    {
+    header("Location: /simple_blog/blog/$url");
+    exit; }
+}
+
         if(isset($_GET['url']))
         {
             // Do basic sanitization of the url variable
