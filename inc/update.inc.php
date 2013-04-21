@@ -2,6 +2,8 @@
 
 // Include the functions so you can create a URL
 include_once 'function.inc.php';
+// Include the image handling class
+include_once 'images.inc.php';
 
 
 if($_SERVER['REQUEST_METHOD']=='POST'
@@ -15,6 +17,33 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 		
 		// Create a URL to save in the database
 		$url = makeUrl($_POST['title']);
+		
+		if(isset($_FILES['image']['tmp_name']))
+		{
+			try
+			{
+				// Instantiate the class and set a save path
+				$img = new ImageHandler("/simple_blog");
+				// Process the file and store the returned path
+				$img_path = $img->processUploadedImage($_FILES['image']);
+				// Output the uploaded image as it was saved
+				echo '<img src="', $img_path, '" /><br />';
+			}
+			catch(Exception $e)
+			{
+				// If an error occurred, output your custom error message
+				die($e->getMessage());
+			}
+		}
+		else
+		{
+			// Avoids a notice if no image was uploaded
+			$img_path = NULL;
+		}
+		
+		// Outputs the saved image path
+		echo "Image Path: ", $img_path, "<br />";
+		exit; // Stops execution before saving the entry
 		
 		// Include database credentials and connect to the database
 		include_once 'db.inc.php';
