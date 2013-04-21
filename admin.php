@@ -82,8 +82,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <title> Simple Blog </title>
 </head>
 
-
-
 <body>
 	<h1> Simple Blog Application </h1>
     
@@ -95,13 +93,16 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     else:
     ?>
 	
-		<form method="post" action="/simple_blog/inc/update.inc.php">
+		<form method="post" action="/simple_blog/inc/update.inc.php" enctype="multipart/form-data" >
 			<fieldset>
 				<legend><?php echo $legend ?></legend> 
 				<label>Title
                 <input type="text" name="title" maxlength="150"
                 value="<?php echo htmlentities($title) ?>" />
                 </label>
+                <label>Image
+				<input type="file" name="image" />
+				</label>
 				<label>Entry
                 <textarea name="entry" cols="45"
                 rows="10"><?php echo sanitizeData($entry) ?></textarea>
