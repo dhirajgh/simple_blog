@@ -27,7 +27,30 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 		// Guess what? It workded after testing
 		$title=$_POST['title'];
 		$entry=$_POST['entry'];
-		
+        
+        // Edit an existing entry
+        if(!empty($_POST['id']))
+        {
+            $sql = "UPDATE entries
+            SET title=?, entry=?, url=?
+            WHERE id=?
+            LIMIT 1";
+            $stmt = $db->prepare($sql);
+            $stmt->execute(
+            array(
+            $_POST['title'],
+            $_POST['entry'],
+            $url,
+            $_POST['id']
+            )
+            );
+        $stmt->closeCursor();
+        }
+        
+        // Create a new entry
+        else
+		{
+		  
 		// Save the entry into the database
 		$sql = "INSERT INTO entries (page, title, entry, url)
 		VALUES (?, ?, ?, ?)";
@@ -37,14 +60,18 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 		);
 		$stmt->closeCursor();
 		
+        }
+        
+        
         // Sanitize the page information for use in the success URL
         $page = htmlentities(strip_tags($_POST['page']));
         
-		// Get the ID of the entry we just saved
+/*		// Get the ID of the entry we just saved
 		$id_obj = $db->query("SELECT LAST_INSERT_ID()");
 		$id = $id_obj->fetch();
 		$id_obj->closeCursor();
-		
+		//Commrnting out the above code after referring the pdf coded lines in the book
+*/
 		
 		
 		// Send the user to the new entry
