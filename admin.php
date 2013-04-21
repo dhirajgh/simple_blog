@@ -22,6 +22,13 @@ $page = 'blog';
         {
             // Do basic sanitization of the url variable
             $url = htmlentities(strip_tags($_GET['url']));
+            
+            // Check if the entry should be deleted
+            if($page == 'delete')
+            {
+            $confirm = confirmDelete($db, $url);
+            }
+            
             // Set the legend of the form
             $legend = "Edit This Entry";
             // Load the entry to be edited
@@ -57,6 +64,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
 <body>
 	<h1> Simple Blog Application </h1>
+    
+    <?php
+    if($page == 'delete'):
+    {
+    echo $confirm;
+    }
+    else:
+    ?>
 	
 		<form method="post" action="/simple_blog/inc/update.inc.php">
 			<fieldset>
@@ -77,5 +92,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				<input type="submit" name="submit" value="Cancel" />
 			</fieldset>
 		</form>
+    <?php endif; ?>
 </body>
 </html>
