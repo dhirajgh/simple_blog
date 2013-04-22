@@ -29,6 +29,9 @@ class ImageHandler
 			return;
 		}
 		
+		// Check that the directory exists
+		$this->checkSaveDir();
+		
 		// Create the full path to the image for saving
 		$filepath = $this->save_dir . $name;
 		
