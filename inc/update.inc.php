@@ -22,14 +22,10 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 		{
 			try
 			{
-				// Instantiate the class and set a save path
+				// Instantiate the class and set a save dir
 				$img = new ImageHandler("/simple_blog/images/");
-				
-				// Process the file and store the returned path
+				// Process the uploaded image and save the returned path
 				$img_path = $img->processUploadedImage($_FILES['image']);
-				
-				// Output the uploaded image as it was saved
-				echo '<img src="', $img_path, '" /><br />';
 			}
 			catch(Exception $e)
 			{
@@ -42,12 +38,39 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 			// Avoids a notice if no image was uploaded
 			$img_path = NULL;
 		}
-		
-		// Outputs the saved image path
-		echo "Image Path: ", $img_path, "<br />";
-		exit; // Stops execution before saving the entry
-		
-		// Include database credentials and connect to the database
+																	/*	
+																	 // This code below is commented
+																	  	if(isset($_FILES['image']['tmp_name']))
+																			{
+																				try
+																				{
+																					// Instantiate the class and set a save path
+																					$img = new ImageHandler("/simple_blog/images/");
+																					
+																					// Process the file and store the returned path
+																					$img_path = $img->processUploadedImage($_FILES['image']);
+																					
+																					// Output the uploaded image as it was saved
+																					echo '<img src="', $img_path, '" /><br />';
+																				}
+																				catch(Exception $e)
+																				{
+																					// If an error occurred, output your custom error message
+																					die($e->getMessage());
+																				}
+																			}
+																			else
+																			{
+																				// Avoids a notice if no image was uploaded
+																				$img_path = NULL;
+																			}
+																			
+																			// Outputs the saved image path
+																			echo "Image Path: ", $img_path, "<br />";
+																			exit; // Stops execution before saving the entry ? 
+																			Commenting out for the same block of entry*/
+																			
+																			// Include database credentials and connect to the database
 		include_once 'db.inc.php';
 	
 		$db = new PDO(DB_INFO, DB_USER, DB_PASS);
@@ -62,18 +85,19 @@ if($_SERVER['REQUEST_METHOD']=='POST'
         // Edit an existing entry
         if(!empty($_POST['id']))
         {
-            $sql = "UPDATE entries
-            SET title=?, entry=?, url=?
-            WHERE id=?
-            LIMIT 1";
+			$sql = "UPDATE entries
+			SET title=?, image=?, entry=?, url=?
+			WHERE id=?
+			LIMIT 1";
             $stmt = $db->prepare($sql);
             $stmt->execute(
-            array(
-            $_POST['title'],
-            $_POST['entry'],
-            $url,
-            $_POST['id']
-            )
+           array(
+				$_POST['title'],
+				$img_path,
+				$_POST['entry'],
+				$url,
+				$_POST['id']
+				)
             );
         $stmt->closeCursor();
         }
@@ -83,11 +107,17 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 		{
 		  
 		// Save the entry into the database
-		$sql = "INSERT INTO entries (page, title, entry, url)
-		VALUES (?, ?, ?, ?)";
+			$sql = "INSERT INTO entries (page, title, image, entry, url)
+			VALUES (?, ?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
 		$stmt->execute(
-		array($_POST['page'], $_POST['title'], $_POST['entry'], $url)
+		array(
+				$_POST['page'],
+				$_POST['title'],
+				$img_path,
+				$_POST['entry'],
+				$url
+				)
 		);
 		$stmt->closeCursor();
 		
