@@ -15,9 +15,10 @@ class ImageHandler
 	 * Resizes/resamples an image uploaded via a web form
 	 *
 	 * @param array $upload the array contained in $_FILES
+	 * @param bool $rename whether or not the image should be renamed
 	 * @return string the path to the resized uploaded file
 	 */
-	public function processUploadedImage($file)
+	public function processUploadedImage($file, $rename=TRUE)
 	{
 		// Separate the uploaded file array
 		list($name, $type, $tmp, $err, $size) = array_values($file);
@@ -31,6 +32,13 @@ class ImageHandler
 		
 		// Check that the directory exists
 		$this->checkSaveDir();
+		
+		// Rename the file if the flag is set to TRUE
+		if($rename===TRUE) {
+			// Retrieve information about the image
+			$img_ext = $this->getImageExtension($type);
+			$name = $this->renameFile($img_ext);
+		}
 		
 		// Create the full path to the image for saving
 		$filepath = $this->save_dir . $name;
@@ -46,6 +54,47 @@ class ImageHandler
 		return $filepath;
 		
 			
+	}
+	
+	/**
+	 * Generates a unique name for a file
+	 *
+	 * Uses the current timestamp and a randomly generated number
+	 * to create a unique name to be used for an uploaded file.
+	 * This helps prevent a new file upload from overwriting an
+	 * existing file with the same name.
+	 *
+	 * @param string $ext the file extension for the upload
+	 * @return string the new filename
+	 */
+	
+	private function renameFile($ext)
+	{
+		/*
+		 * Returns the current timestamp and a random number
+		* to avoid duplicate filenames
+		*/
+		return time() . '_' . mt_rand(1000,9999) . $ext;
+	}
+	/**
+	 * Determines the filetype and extension of an image
+	 *
+	 * @param string $type the MIME type of the image
+	 * @return string the extension to be used with the file
+	 */
+	private function getImageExtension($type)
+	{
+		switch($type) {
+			case 'image/gif':
+				return '.gif';
+			case 'image/jpeg':
+			case 'image/pjpeg':
+				return '.jpg';
+			case 'image/png':
+				return '.png';
+			default:
+				throw new Exception('File type is not recognized!');
+		}
 	}
 	
 	/**
