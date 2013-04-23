@@ -9,7 +9,7 @@ function retrieveEntries($db, $page, $url=NULL)
 	{
 		// Load specified entry
 		
-		$sql = "SELECT id, page, title, entry
+		$sql = "SELECT id, page, title, image, entry
 		FROM entries
 		WHERE url=?
 		LIMIT 1";
@@ -26,7 +26,7 @@ function retrieveEntries($db, $page, $url=NULL)
 	/* * If no entry ID was supplied, load all entry titles */
 		else
 	{
-				$sql = "SELECT id, page, title, entry, url
+				$sql = "SELECT id, page, title, image, entry, url
 				FROM entries
 				WHERE page=?
 				ORDER BY created DESC";
@@ -144,7 +144,17 @@ $stmt = $db->prepare($sql);
 return $stmt->execute(array($url));
 }
 
-
+function formatImage($img=NULL, $alt=NULL)
+{
+	if(isset($img))
+	{
+		return '<img src="'.$img.'" alt="'.$alt.'" />';
+	}
+	else
+	{
+		return NULL;
+	}
+}
 
 
 

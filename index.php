@@ -68,8 +68,13 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml
                         
                         // Build the admin links
                         $admin = adminLinks($page, $url);
+                        
+                        // Format the image if one exists
+                        $img = formatImage($e['image'], $e['title']);
+                        
 			?>
 					<h2> <?php echo $e['title'] ?> </h2>
+					<p> <?php echo $img, $e['entry'] ?> </p>
 					<p> <?php echo $e['entry'] ?> </p>
                     <p>
                     <?php echo $admin['edit'] ?>
