@@ -12,12 +12,11 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 ?>
 
 
-
 <rss version="2.0">
 <channel>
-<title>My Simple Blog</title>
-<link>http://localhost/simple_blog/</link>
-<description>This blog is awesome.</description>
-<language>en-us</language>
+		<title>My Simple Blog</title>
+		<link>http://localhost/simple_blog/</link>
+		<description>This blog is awesome.</description>
+		<language>en-us</language>
 </channel>
 </rss>
