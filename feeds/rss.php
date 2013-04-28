@@ -46,12 +46,18 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 		
 		// Build the full URL to the entry
 		$url = 'http://localhost/simple_blog/blog/' . $e['url'];
+		
+		// Format the date correctly for RSS pubDate
+		$date = date(DATE_RSS, strtotime($e['created']));
+		
 		?>
 		
 		<item>
 		<title><?php echo $e['title']; ?></title>
 		<description><?php echo $entry; ?></description>
 		<link><?php echo $url; ?></link>
+		<guid><?php echo $url; ?></guid>
+		<pubDate><?php echo $date; ?></pubDate>
 		</item>
 	<?php endforeach; ?>		
 			

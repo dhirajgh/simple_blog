@@ -43,6 +43,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml
 <!-- Linking of the css stylesheet from other source -->
 
 <link rel="stylesheet" href="/css/default.css" type="text/css" />
+<link rel="alternate" type="application/rss+xml"
+title="My Simple Blog - RSS 2.0"
+href="/simple_blog/feeds/rss.php" />
 <title> Simple Blog</title>
 </head>
 
@@ -115,6 +118,12 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml
 					Post a New Entry
 					</a>
 				
+					</p>
+					
+					<p>
+					<a href="/simple_blog/feeds/rss.php">
+					Subscribe via RSS!
+					</a>
 					</p>
                     
 	</div>

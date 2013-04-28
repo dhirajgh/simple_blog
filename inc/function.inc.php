@@ -9,7 +9,7 @@ function retrieveEntries($db, $page, $url=NULL)
 	{
 		// Load specified entry
 		
-		$sql = "SELECT id, page, title, image, entry
+		$sql = "SELECT id, page, title, image, entry, created
 		FROM entries
 		WHERE url=?
 		LIMIT 1";
@@ -26,7 +26,7 @@ function retrieveEntries($db, $page, $url=NULL)
 	/* * If no entry ID was supplied, load all entry titles */
 		else
 	{
-				$sql = "SELECT id, page, title, image, entry, url
+				$sql = "SELECT id, page, title, image, entry, url, created
 				FROM entries
 				WHERE page=?
 				ORDER BY created DESC";
