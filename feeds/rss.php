@@ -8,6 +8,7 @@ include_once '../inc/db.inc.php';
 // Open a database connection
 $db = new PDO(DB_INFO, DB_USER, DB_PASS);
 
+
 // Load all blog entries
 $e = retrieveEntries($db, 'blog');
 
@@ -52,7 +53,7 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 		<description><?php echo $entry; ?></description>
 		<link><?php echo $url; ?></link>
 		</item>
-		<?php endforeach; ?>	
+	<?php endforeach; ?>		
 			
 </channel>
 </rss>
