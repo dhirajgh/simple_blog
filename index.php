@@ -75,6 +75,19 @@ href="/simple_blog/feeds/rss.php" />
                         // Format the image if one exists
                         $img = formatImage($e['image'], $e['title']);
                         
+                        if($page=='blog')
+                        {
+                        	// Load the comment object
+                        	include_once 'inc/comments.inc.php';
+                        	$comments = new Comments();
+                        	$comment_form = $comments->showCommentForm($e['id']);
+                        }
+                        else
+                        {
+                        	$comment_form = NULL;
+                        }
+                        
+                        
 			?>
 					<h2> <?php echo $e['title'] ?> </h2>
 					<p> <?php echo $img, $e['entry'] ?> </p>
@@ -88,7 +101,8 @@ href="/simple_blog/feeds/rss.php" />
 					<p class="backlink">
 					<a href="./">Back to Latest Entries</a>
 					</p>
-					<?php endif; ?>
+					<?php echo $comment_form; endif; ?>
+		
 			<?php
 
 					} // End the if statement
