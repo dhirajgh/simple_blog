@@ -123,10 +123,24 @@ FORM;
 						// Generate a byline for the comment
 						$byline = "<span><strong>$c[name]</strong>
 						[Posted on $date]</span>";
-						// Generate delete link for the comment display
+						
+						if(isset($_SESSION['loggedin'])
+								&& $_SESSION['loggedin'] == 1)
+						{
+							// Generate delete link for the comment display
+							$admin = "<a href=\"/simple_blog/inc/update.inc.php"
+							. "?action=comment_delete&id=$c[id]\""
+							. " class=\"admin\">delete</a>";
+						}
+						else
+						{
+						$admin = NULL;
+						}
+						
+					/*	// Generate delete link for the comment display
 						$admin = "<a href=\"/simple_blog/inc/update.inc.php"
 						. "?action=comment_delete&id=$c[id]\""
-						. "class=\"admin\">delete</a>";
+						. "class=\"admin\">delete</a>";  Commented out as added in the above loop of session  */
 					}
 					else
 					{
