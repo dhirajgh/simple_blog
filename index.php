@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 // Include the necessary files
 include_once 'inc/function.inc.php';
 include_once 'inc/db.inc.php';
@@ -68,9 +71,23 @@ href="/simple_blog/feeds/rss.php" />
 						
 						// Get the URL if one wasn't passed
 						$url = (isset($url)) ? $url : $e['url'];
-                        
+						
+						
+						if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == 1)
+						{
+							// Build the admin links
+							$admin = adminLinks($page, $url);
+						}
+						else
+						{
+							$admin = array('edit'=>NULL, 'delete'=>NULL);
+						}
+						
+						                       
                         // Build the admin links
-                        $admin = adminLinks($page, $url);
+               // Commented out because included in the upper loop 
+               //if not working you can check this line of code in the first instance    
+               //     $admin = adminLinks($page, $url);
                         
                         // Format the image if one exists
                         $img = formatImage($e['image'], $e['title']);
@@ -133,10 +150,16 @@ href="/simple_blog/feeds/rss.php" />
                    
 					<p class="backlink">
 					
+					<?php  // Start of if Loop
+					if($page=='blog'
+					&& isset($_SESSION['loggedin'])
+					&& $_SESSION['loggedin'] == 1):
+					?>
+					
 					<a href="/simple_blog/admin/<?php echo $page ?>">
 					Post a New Entry
 					</a>
-				
+					<?php endif;  // End of Php if Loop ?>
 					</p>
 					
 					<p>
