@@ -188,6 +188,24 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 				exit;
 			}
 		}
+		
+		
+		// If an admin is being created, save it here
+		else if($_SERVER['REQUEST_METHOD'] == 'POST'
+				&& $_POST['action'] == 'createuser'
+				&& !empty($_POST['username'])
+				&& !empty($_POST['password']))
+		{
+			// Include database credentials and connect to the database
+			include_once 'db.inc.php';
+			$db = new PDO(DB_INFO, DB_USER, DB_PASS);
+			$sql = "INSERT INTO admin (username, password)
+			VALUES(?, SHA1(?))";
+			$stmt = $db->prepare($sql);
+			$stmt->execute(array($_POST['username'], $_POST['password']));
+			header('Location: /simple_blog/');
+			exit;
+		}
 
 // If both conditions aren't met, sends the user back to the main page
 else
