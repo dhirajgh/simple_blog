@@ -58,6 +58,13 @@ href="/simple_blog/feeds/rss.php" />
     <ul id="menu">
     <li><a href="/simple_blog/blog/">Blog</a></li>
     <li><a href="/simple_blog/about/">About the Author</a></li>
+    <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin']==1): ?>
+	<p id="control_panel">
+	You are logged in!
+	<a href="/simple_blog/inc/update.inc.php?action=logout">Log
+	out</a>.
+	</p>
+	<?php endif; ?>
     </ul>
     
 		<div id="entries">
