@@ -1,5 +1,8 @@
 <?php
 
+// Start the session
+session_start();
+
 // Include the functions so you can create a URL
 include_once 'function.inc.php';
 // Include the image handling class
@@ -188,6 +191,37 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 				exit;
 			}
 		}
+		
+		
+		// If a user is trying to log in, check it here
+		else if($_SERVER['REQUEST_METHOD'] == 'POST'
+				&& $_POST['action'] == 'login'
+				&& !empty($_POST['username'])
+				&& !empty($_POST['password']))
+		{
+			// Include database credentials and connect to the database
+			include_once 'db.inc.php';
+			$db = new PDO(DB_INFO, DB_USER, DB_PASS);
+			$sql = "SELECT COUNT(*) AS num_users
+			FROM admin
+			WHERE username=?
+			AND password=SHA1(?)";
+			$stmt = $db->prepare($sql);
+			$stmt->execute(array($_POST['username'], $_POST['password']));
+			$response = $stmt->fetch();
+			if($response['num_users'] > 0)
+			{
+				$_SESSION['loggedin'] = 1;
+			}
+		
+			else
+			{
+				$_SESSION['loggedin'] = NULL;
+			}
+			header('Location: /simple_blog/');
+			exit;
+		}
+		
 		
 		
 		// If an admin is being created, save it here
