@@ -58,15 +58,24 @@ if(isset($_POST['action']) && $_POST['action'] == 'delete')
             // Save each entry field as individual variables
             $id = $e['id'];
             $title = $e['title'];
+            $img = $e['image']; // Added to confirm is upto date: if any Concern then delete
             $entry = $e['entry'];
         }
         else
         {
+        	// Check if we're creating a new user
+        	if($page == 'createuser')
+        	{
+        		$create = createUserForm();
+        	}
+        	
+        	
                 // Set the legend
                 $legend = "New Entry Submission";
                 // Set variables to NULL if not editing
                 $id = NULL;
                 $title = NULL;
+                $img = NULL; // Added to confirm is upto date: if any Concern then delete
                 $entry = NULL;
         }
 
@@ -90,7 +99,13 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     {
     echo $confirm;
     }
+    elseif($page == 'createuser'):
+    {
+    	echo $create;
+    }
     else:
+    
+    
     ?>
 	
 		<form method="post" action="/simple_blog/inc/update.inc.php" enctype="multipart/form-data" >
