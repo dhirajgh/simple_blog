@@ -175,4 +175,8 @@ function formatImage($img=NULL, $alt=NULL)
 			</form>
 FORM;
 		}
+		
+		
+		
+		
 ?>
