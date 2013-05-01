@@ -154,6 +154,40 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 		echo $comments->confirmDelete($_GET['id']);
 		exit;
 	}
+	
+	// If the confirmDelete() form was submitted, handle it here
+	else if($_SERVER['REQUEST_METHOD'] == 'POST'
+			&& $_POST['action'] == 'comment_delete')
+		
+		{
+			// If set, store the entry from which we came
+			$loc = isset($_POST['url']) ? $_POST['url'] : '../';
+			// If the user clicked "Yes", continue with deletion
+			if($_POST['confirm'] == "Yes")
+			{
+				// Include and instantiate the Comments class
+				include_once 'comments.inc.php';
+				$comments = new Comments();
+				// Delete the comment and return to the entry
+				if($comments->deleteComment($_POST['id']))
+				{
+					header('Location: '.$loc);
+					exit;
+				}
+				// If deleting fails, output an error message
+				else
+				{
+					exit('Could not delete the comment.');
+				}
+			}
+			
+			// If the user clicked "No", do nothing and return to the entry
+			else
+			{
+				header('Location: '.$loc);
+				exit;
+			}
+		}
 
 // If both conditions aren't met, sends the user back to the main page
 else
