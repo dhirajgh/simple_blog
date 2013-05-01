@@ -22,20 +22,49 @@ class Comments
 	// Display a form for users to enter new comments with
 	public function showCommentForm($blog_id)
 	{
-
+		
+		// Check if session variables exist
+		if(isset($_SESSION['c_name']))
+		{
+			$n = $_SESSION['c_name'];
+		}
+		else
+		{
+			$n = NULL;
+		}
+		
+		if(isset($_SESSION['c_email']))
+		{
+			$e = $_SESSION['c_email'];
+		}
+		else
+		{
+			$e = NULL;
+		}
+		if(isset($_SESSION['c_comment']))
+		{
+			$c = $_SESSION['c_comment'];
+		}
+		else
+		{
+			$c = NULL;
+		}
+		
+		
+		
 		return <<<FORM
 		<form action="/simple_blog/inc/update.inc.php"
 		method="post" id="comment-form">
 		<fieldset>
 		<legend>Post a Comment</legend>
 		<label>Name
-		<input type="text" name="name" maxlength="75" />
+		<input type="text" name="name" maxlength="75" value="$n" />
 		</label>
 		<label>Email
-		<input type="text" name="email" maxlength="150" />
+		<input type="text" name="email" maxlength="150" value="$e" />
 		</label>
 		<label>Comment
-		<textarea rows="10" cols="45" name="comment"></textarea>
+		<textarea rows="10" cols="45" name="comment">$c</textarea>
 		</label>
 		<input type="hidden" name="blog_id" value="$blog_id" />
 		<input type="submit" name="submit" value="Post Comment" />
@@ -48,6 +77,21 @@ FORM;
 			// Save comments to the database
 			public function saveComment($p)
 			{
+				
+				// Save the comment information in a session
+				$_SESSION['c_name'] = htmlentities($p['name'], ENT_QUOTES);
+				$_SESSION['c_email'] = htmlentities($p['email'], ENT_QUOTES);
+		//		$_SESSION['c_comment'] = htmlentities($p['cmnt'], ENT_QUOTES);
+				$_SESSION['c_comment'] = htmlentities($p['comment'], ENT_QUOTES);
+				// May be instead of cmnt it shoud be comment
+				
+				// Make sure the email address is valid first
+				if($this->validateEmail($p['email'])===FALSE)
+				{
+					return FALSE;
+				}
+				
+				
 				// Sanitize the data and store in variables
 				$blog_id = htmlentities(strip_tags($p['blog_id']),ENT_QUOTES);
 				$name = htmlentities(strip_tags($p['name']),ENT_QUOTES);
@@ -55,6 +99,7 @@ FORM;
 				$comment = htmlentities(strip_tags($p['comment']),ENT_QUOTES);
 				// Keep formatting of comments and remove extra whitespace
 				$comment = nl2br(trim($comments));
+				
 				// Generate and prepare the SQL command
 				$sql = "INSERT INTO comments (blog_id, name, email,comment)
 		VALUES (?, ?, ?, ?)";
@@ -64,6 +109,13 @@ FORM;
 					$stmt->execute(array($blog_id, $name, $email, $comment));
 					$stmt->closeCursor();
 					return TRUE;
+					
+					// Destroy the comment information to empty the form
+					unset($_SESSION['c_name'], $_SESSION['c_email'],
+					$_SESSION['c_comment']);
+				
+					
+					
 				}
 				else
 				{
@@ -72,6 +124,15 @@ FORM;
 				}
 			}
 			
+			
+			private function validateEmail($email)
+			{
+				// Matches valid email addresses
+				$p = '/^[\w-]+(\.[\w-]+)*@[a-z0-9-]+'
+				.'(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i';
+				// If a match is found, return TRUE, otherwise return FALSE
+				return (preg_match($p, $email)) ? TRUE : FALSE;
+			}
 			
 			// Load all comments for a blog entry into memory
 			public function retrieveComments($blog_id)
@@ -219,5 +280,7 @@ FORM;
 				}
 				}
 }		
+
+
 
 ?>
