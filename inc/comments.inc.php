@@ -66,7 +66,8 @@ class Comments
 			$c = NULL;
 		}
 		
-		
+		// Generate a challenge question
+		$challenge = $this->generateChallenge();
 		
 		return <<<FORM
 		<form action="/simple_blog/inc/update.inc.php"
@@ -81,7 +82,7 @@ class Comments
 		</label>
 		<label>Comment
 		<textarea rows="10" cols="45" name="comment">$c</textarea>
-		</label>
+		</label>$challenge
 		<input type="hidden" name="blog_id" value="$blog_id" />
 		<input type="submit" name="submit" value="Post Comment" />
 		<input type="submit" name="submit" value="Cancel" />
@@ -296,7 +297,31 @@ FORM;
 					// If something went wrong, return false
 					return FALSE;
 				}
-				}
+			}
+				
+
+			private function generateChallenge()
+			{
+				// Store two random numbers in an array
+				$numbers = array(mt_rand(1,4), mt_rand(1,4));
+				
+				// Store the correct answer in a session
+				$_SESSION['challenge'] = $numbers[0] + $numbers[1];
+				
+				// Convert the numbers to their ASCII codes
+				$converted = array_map('ord', $numbers);
+				
+				// Generate a math question as HTML markup
+				return "
+				<label>&#87;&#104;&#97;&#116;&#32;&#105;&#115;&#32;
+				&#$converted[0];&#32;&#43;&#32;&#$converted[1];&#63;
+				<input type=\"text\" name=\"s_q\" />
+				</label>";
+				
+				
+			}	
+			
+			
 }		
 
 
