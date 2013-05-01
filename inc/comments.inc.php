@@ -23,6 +23,22 @@ class Comments
 	public function showCommentForm($blog_id)
 	{
 		
+		$errors = array(
+				1 => '<p class="error">Something went wrong while '
+				. 'saving your comment. Please try again!</p>',
+				2 => '<p class="error">Please provide a valid '
+				. 'email address!</p>'
+		);
+		if(isset($_SESSION['error']))
+		{
+			$error = $errors[$_SESSION['error']];
+		}
+		else
+		{
+			$error = NULL;
+		}
+		
+		
 		// Check if session variables exist
 		if(isset($_SESSION['c_name']))
 		{
@@ -56,7 +72,7 @@ class Comments
 		<form action="/simple_blog/inc/update.inc.php"
 		method="post" id="comment-form">
 		<fieldset>
-		<legend>Post a Comment</legend>
+		<legend>Post a Comment</legend>$error
 		<label>Name
 		<input type="text" name="name" maxlength="75" value="$n" />
 		</label>
@@ -88,7 +104,8 @@ FORM;
 				// Make sure the email address is valid first
 				if($this->validateEmail($p['email'])===FALSE)
 				{
-					return FALSE;
+					$_SESSION['error'] = 2;
+					return;
 				}
 				
 				
@@ -120,7 +137,8 @@ FORM;
 				else
 				{
 					// If something went wrong, return false
-					return FALSE;
+					$_SESSION['error'] = 1;
+					return;
 				}
 			}
 			

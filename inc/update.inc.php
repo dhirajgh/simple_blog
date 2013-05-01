@@ -124,10 +124,28 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 			// Include and instantiate the Comments class
 			include_once 'comments.inc.php';
 			$comments = new Comments();
-			// Save the comment
+			
+			// AA Save the comment
+			$comments->saveComment($_POST);
+			// If available, store the entry the user came from
+			if(isset($_SERVER['HTTP_REFERER']))
+			{
+				$loc = $_SERVER['HTTP_REFERER'];
+			}
+			else
+			{
+				$loc = '../';
+			}
+			// Send the user back to the entry
+			header('Location: '.$loc);
+			exit; //AA
+			
+			
+		/*	// Save the comment
 			if($comments->saveComment($_POST))
 			{
-				// If available, store the entry the user came from
+				
+			// If available, store the entry the user came from
 				if(isset($_SERVER['HTTP_REFERER']))
 				{
 					$loc = $_SERVER['HTTP_REFERER'];
@@ -138,7 +156,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 				}
 				// Send the user back to the entry
 				header('Location: '.$loc);
-				exit;
+				exit;  
 			}
 			
 			// If saving fails, output an error message
@@ -146,6 +164,8 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 			{
 				exit('Something went wrong while saving the comment.');
 			}
+			// // Completely replaced by the above code block marked AA */
+						
 	}
 
 	// If the delete link is clicked on a comment, confirm it here
@@ -254,6 +274,10 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 // If both conditions aren't met, sends the user back to the main page
 else
 {
+	
+	unset($_SESSION['c_name'], $_SESSION['c_email'],
+	$_SESSION['c_comment'], $_SESSION['error']);
+	
 header('Location: /simple_blog/admin.php');
 exit;
 }
