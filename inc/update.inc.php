@@ -241,6 +241,16 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 			exit;
 		}
 
+		
+		// If the user has chosen to log out, process it here
+		else if($_GET['action'] == 'logout')
+		{
+			session_destroy();
+			header('Location: ../');
+			exit;
+		}
+		
+		
 // If both conditions aren't met, sends the user back to the main page
 else
 {
