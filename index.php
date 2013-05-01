@@ -80,6 +80,7 @@ href="/simple_blog/feeds/rss.php" />
                         	// Load the comment object
                         	include_once 'inc/comments.inc.php';
                         	$comments = new Comments();
+                        	$comment_disp = $comments->showComments($e['id']);
                         	$comment_form = $comments->showCommentForm($e['id']);
                         }
                         else
@@ -101,7 +102,11 @@ href="/simple_blog/feeds/rss.php" />
 					<p class="backlink">
 					<a href="./">Back to Latest Entries</a>
 					</p>
-					<?php echo $comment_form; endif; ?>
+					<h3> Comments for This Entry </h3>
+					<?php echo $comment_disp, $comment_form; endif; ?>
+								
+							
+			
 		
 			<?php
 
