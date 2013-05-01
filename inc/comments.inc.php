@@ -27,7 +27,9 @@ class Comments
 				1 => '<p class="error">Something went wrong while '
 				. 'saving your comment. Please try again!</p>',
 				2 => '<p class="error">Please provide a valid '
-				. 'email address!</p>'
+				. 'email address!</p>',
+				3 => '<p class="error">Please answer the anti-spam '
+				. 'question correctly!</p>'
 		);
 		if(isset($_SESSION['error']))
 		{
@@ -109,6 +111,12 @@ FORM;
 					return;
 				}
 				
+				// Make sure the challenge question was properly answered
+				if(!$this->verifyResponse($p['s_q'], $p['s_1'], $p['s_2']))
+				{
+					$_SESSION['error'] = 3;
+					return;
+				}
 				
 				// Sanitize the data and store in variables
 				$blog_id = htmlentities(strip_tags($p['blog_id']),ENT_QUOTES);
@@ -320,7 +328,15 @@ FORM;
 				
 				
 			}	
-			
+
+			private function verifyResponse($resp)
+			{
+				// Grab the session value and destroy it
+				$val = $_SESSION['challenge'];
+				unset($_SESSION['challenge']);
+				// Returns TRUE if equal, FALSE otherwise
+				return $resp==$val;
+			}
 			
 }		
 
